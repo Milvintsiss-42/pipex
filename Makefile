@@ -6,7 +6,7 @@
 #    By: ple-stra <ple-stra@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/29 15:36:23 by ple-stra          #+#    #+#              #
-#    Updated: 2022/01/29 15:46:20 by ple-stra         ###   ########.fr        #
+#    Updated: 2022/01/29 17:14:06 by ple-stra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,7 @@ $(OBJ_DIR)/%.o: $(SRCS_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(LIBFT_A)	:
+$(LIBFT_A)	: check_submo
 			@echo "building libft..."
 			@$(MAKE) -sC $(LIBFT_DIR) all
 rmlibft		:
@@ -68,9 +68,15 @@ re			: fclean all
 
 reall		: fcleanall all
 
+check_submo	:
+			git submodule init
+			git submodule update
+
 nWerror		:
 			@echo "WARN: Compiling without Werror flag!"
 sanitize	:
 			@echo "WARN: Compiling with fsanitize flag!"
 
-.PHONY: all clean fclean fcleanall re reall rmlibft nWerror sanitize
+.PHONY: \
+ all clean fclean fcleanall re reall rmlibft check_submo\
+ nWerror sanitize
