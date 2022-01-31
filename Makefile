@@ -6,7 +6,7 @@
 #    By: ple-stra <ple-stra@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/29 15:36:23 by ple-stra          #+#    #+#              #
-#    Updated: 2022/01/29 17:14:06 by ple-stra         ###   ########.fr        #
+#    Updated: 2022/01/31 01:31:09 by ple-stra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,8 +43,11 @@ $(OBJ_DIR)/%.o: $(SRCS_DIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(LIBFT_A)	: check_submo
+ifeq (,$(wildcard $(LIBFT_A)))
 			@echo "building libft..."
 			@$(MAKE) -sC $(LIBFT_DIR) all
+endif
+
 rmlibft		:
 			@echo "deleting libft build..."
 			@$(MAKE) -sC $(LIBFT_DIR) fclean
@@ -69,8 +72,11 @@ re			: fclean all
 reall		: fcleanall all
 
 check_submo	:
-			git submodule init
-			git submodule update
+			@if git submodule status $(LIBFT_DIR) | egrep -q '^[-]'; then \
+				echo "Initializing git module $(LIBFT_DIR)..."; \
+				git submodule init; \
+				git submodule update; \
+			fi
 
 nWerror		:
 			@echo "WARN: Compiling without Werror flag!"
