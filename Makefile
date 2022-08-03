@@ -6,14 +6,16 @@
 #    By: ple-stra <ple-stra@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/29 15:36:23 by ple-stra          #+#    #+#              #
-#    Updated: 2022/05/09 19:17:55 by ple-stra         ###   ########.fr        #
+#    Updated: 2022/08/03 22:29:02 by ple-stra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		= pipex
 
 SRCS_DIR	= srcs
-SRCS		= pipex.c
+SRCS		= pipex.c\
+ path.c processes.c\
+ errors.c
 BUILD_DIR	= build
 OBJ_DIR		= $(BUILD_DIR)/objs
 OBJ			= $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
