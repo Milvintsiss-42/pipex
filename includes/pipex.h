@@ -6,7 +6,7 @@
 /*   By: ple-stra <ple-stra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 15:45:28 by ple-stra          #+#    #+#             */
-/*   Updated: 2022/08/03 22:27:25 by ple-stra         ###   ########.fr       */
+/*   Updated: 2022/08/06 18:56:17 by ple-stra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # define ERR_INV_FILE			"Invalid file"
 # define ERRNO_CANT_OPEN_FILE	"Cannot open file"
 # define ERRNO_INSUFFICIENT_MEM	"Insufficient memory"
+# define ERR_UNKNOWN			"Unknown error"
 
 typedef struct s_pip
 {
