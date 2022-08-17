@@ -6,7 +6,7 @@
 #    By: ple-stra <ple-stra@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/29 15:36:23 by ple-stra          #+#    #+#              #
-#    Updated: 2022/08/03 22:29:02 by ple-stra         ###   ########.fr        #
+#    Updated: 2022/08/17 22:34:18 by ple-stra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,10 +16,17 @@ SRCS_DIR	= srcs
 SRCS		= pipex.c\
  path.c processes.c\
  errors.c
+SRCSBNS_DIR	= srcs_bonus
+SRCSBNS		= pipex_bonus.c\
+ path_bonus.c processes_bonus.c\
+ errors_bonus.c
 BUILD_DIR	= build
 OBJ_DIR		= $(BUILD_DIR)/objs
+OBJBNS_DIR	= $(BUILD_DIR)/objs_bonus
 OBJ			= $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
+OBJBNS		= $(addprefix $(OBJBNS_DIR)/, $(SRCSBNS:.c=.o))
 INC			= -I./includes -I./$(LIBFT_DIR)/includes -I./
+INCBNS		= -I./includes_bonus -I./$(LIBFT_DIR)/includes -I./
 
 LIBFT_DIR	= libft
 LIBFT		= $(LIBFT_DIR)/build/libft.a
@@ -44,11 +51,15 @@ RM			= rm -rf
 
 all			: $(NAME)
 
-bonus		: all
+bonus		: $(GIT_SUBM) $(LIBFT) $(OBJBNS)
+			$(CC) $(CFLAGS) $(INCBNS) -o $(NAME) $(OBJBNS) $(LFLAGS)
 
 $(OBJ_DIR)/%.o: $(SRCS_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@
+$(OBJBNS_DIR)/%.o: $(SRCSBNS_DIR)/%.c
+	@mkdir -p $(OBJBNS_DIR)
+	$(CC) $(CFLAGS) $(INCBNS) -c $< -o $@
 
 $(GIT_SUBM): %/.git: .gitmodules
 	@git submodule init
@@ -69,17 +80,18 @@ $(NAME)		: $(GIT_SUBM) $(LIBFT) $(OBJ)
 			
 clean		:
 			$(RM) $(OBJ_DIR)
+			$(RM) $(OBJBNS_DIR)
 
 fclean		:
 			$(RM) $(BUILD_DIR)
 			$(RM) $(NAME)
-
 
 fcleanall	: rmlibft
 			$(RM) $(BUILD_DIR)
 			$(RM) $(NAME)
 
 re			: fclean all
+rebonus		: fclean bonus
 
 nWerror		:
 			@echo "WARN: Compiling without Werror flag!"
@@ -89,5 +101,5 @@ debug:
 			@echo "WARN: debug is enabled"
 
 .PHONY: \
- all clean fclean fcleanall re rmlibft\
+ all bonus clean fclean fcleanall re rebonus rmlibft\
  nWerror sanitize debug
