@@ -6,39 +6,67 @@
 /*   By: ple-stra <ple-stra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 15:44:27 by ple-stra          #+#    #+#             */
-/*   Updated: 2022/08/17 20:06:05 by ple-stra         ###   ########.fr       */
+/*   Updated: 2022/08/18 06:32:26 by ple-stra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-void	init_pip_data(t_pip *pip, char const **argv, char **env)
+static void	init_pip_data(t_pip *pip, int argc, char const **argv, char **env)
 {
 	pip->exec_name = get_exec_basename(argv[0]);
 	pip->env = env;
 	pip->path = get_path_from_env(env);
+	pip->pipes = 0;
+	pip->nb_pipes = argc - 4;
 	pip->s_errno = 0;
+}
+
+static void	create_pipes(t_pip *pip)
+{
+	int	i;
+
+	pip->pipes = malloc(sizeof(int) * pip->nb_pipes * 2);
+	if (!pip->pipes)
+		ft_exit(*pip, ft_perror_errno(*pip));
+	i = 0;
+	while (i < pip->nb_pipes)
+	{
+		if (pipe(pip->pipes + i * 2) == -1)
+			ft_exit(*pip, ft_perror_errno(*pip));
+		i++;
+	}
+}
+
+static void	close_all_pipes(t_pip *pip)
+{
+	int	i;
+
+	i = 0;
+	while (i < pip->nb_pipes)
+	{
+		close_pipe(pip->pipes + i * 2);
+		i++;
+	}
 }
 
 int	main(int argc, char const **argv, char **env)
 {
 	t_pip	pip;
 	int		pid[2];
-	int		fds_pipe[2];
 	int		status_code;
 
-	init_pip_data(&pip, argv, env);
-	if (argc != 5)
+	init_pip_data(&pip, argc, argv, env);
+	if (argc < 5)
 		return (ft_perror(pip, ERR_WRG_NB_ARG));
-	if (pipe(fds_pipe) == -1)
-		return (ft_perror_errno(pip));
+	create_pipes(&pip);
 	pid[0] = fork();
 	if (pid[0] == 0)
-		child_1(&pip, argv[1], argv[2], fds_pipe);
+		child_1(&pip, argv[1], argv[2], pip.pipes);
 	pid[1] = fork();
 	if (pid[1] == 0)
-		child_2(&pip, argv[4], argv[3], fds_pipe);
-	close_pipe(fds_pipe);
+		child_2(&pip, argv[4], argv[3], pip.pipes);
+	close_all_pipes(&pip);
 	if (pid[0] == -1 || pid[1] == -1)
 		return (ft_perror_errno(pip));
 	waitpid(pid[0], NULL, 0);
