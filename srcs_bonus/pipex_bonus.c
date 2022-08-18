@@ -6,7 +6,7 @@
 /*   By: ple-stra <ple-stra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 15:44:27 by ple-stra          #+#    #+#             */
-/*   Updated: 2022/08/18 08:46:32 by ple-stra         ###   ########.fr       */
+/*   Updated: 2022/08/18 09:18:30 by ple-stra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ static void	create_pipes(t_pip *pip)
 
 	pip->pipes = malloc(sizeof(int) * pip->nb_pipes * 2);
 	if (!pip->pipes)
-		ft_exit(*pip, ft_perror_errno(*pip));
+		ft_exit(*pip, ft_perror_errno(*pip), 0);
 	i = 0;
 	while (i < pip->nb_pipes)
 	{
 		if (pipe(pip->pipes + i * 2) == -1)
-			ft_exit(*pip, ft_perror_errno(*pip));
+			ft_exit(*pip, ft_perror_errno(*pip), 0);
 		i++;
 	}
 }
@@ -73,7 +73,7 @@ int	main(int argc, char const **argv, char **env)
 	waitpid(pid[0], NULL, 0);
 	waitpid(pid[1], &status_code, 0);
 	if (WIFEXITED(status_code))
-		ft_exit(pip, WEXITSTATUS(status_code));
-	ft_exit(pip, 0);
+		ft_exit(pip, WEXITSTATUS(status_code), 0);
+	ft_exit(pip, 0, 0);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ple-stra <ple-stra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 21:27:15 by ple-stra          #+#    #+#             */
-/*   Updated: 2022/08/18 08:55:24 by ple-stra         ###   ########.fr       */
+/*   Updated: 2022/08/18 09:07:05 by ple-stra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,15 @@ int	ft_fperror_errno(t_pip pip, const char *filename)
 	return (errno);
 }
 
-void	ft_exit(t_pip pip, int err_num)
+void	ft_exit(t_pip pip, int err_num, int is_child)
 {
 	if (pip.pipes)
 		close_all_pipes(pip);
-	free(pip.pipes);
+	if (!is_child)
+	{
+		free(pip.pipes);
+		free(pip.pids);
+	}
 	close(STDIN_FILENO);
 	close(STDOUT_FILENO);
 	exit(err_num);
