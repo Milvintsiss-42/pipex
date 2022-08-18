@@ -6,7 +6,7 @@
 /*   By: ple-stra <ple-stra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 22:24:34 by ple-stra          #+#    #+#             */
-/*   Updated: 2022/08/18 01:52:37 by ple-stra         ###   ########.fr       */
+/*   Updated: 2022/08/18 09:13:08 by ple-stra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ static void	exec_command(t_pip *pip, const char *cmd_x_args)
 	char	*abs_path;
 
 	if (!*cmd_x_args)
-		exit(ft_fperror(*pip, "", strerror(13)));
+		ft_exit(*pip, ft_fperror(*pip, "", strerror(13)));
 	args = ft_split(cmd_x_args, ' ');
 	if (!args)
-		exit(ft_perror_errno(*pip));
+		ft_exit(*pip, ft_perror_errno(*pip));
 	abs_path = get_absolute_path(pip, args[0], pip->path);
 	if (!abs_path)
 	{
@@ -30,11 +30,11 @@ static void	exec_command(t_pip *pip, const char *cmd_x_args)
 		else
 			ft_fperror(*pip, args[0], strerror(pip->s_errno));
 		ft_freesplit(args);
-		exit(pip->s_errno);
+		ft_exit(*pip, pip->s_errno);
 	}
 	if (abs_path)
 		if (execve(abs_path, args, pip->env) == -1)
-			exit(ft_perror_errno(*pip));
+			ft_exit(*pip, ft_perror_errno(*pip));
 }
 
 void	child_1(t_pip *pip, const char *infile, const char *cmd,
