@@ -6,7 +6,7 @@
 /*   By: ple-stra <ple-stra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 15:44:27 by ple-stra          #+#    #+#             */
-/*   Updated: 2022/08/18 07:04:38 by ple-stra         ###   ########.fr       */
+/*   Updated: 2022/08/18 07:26:59 by ple-stra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@ static void	init_pip_data(t_pip *pip, int argc, char const **argv, char **env)
 	pip->path = get_path_from_env(env);
 	pip->is_heredoc = ft_strncmp(argv[1], "here_doc", 9) == 0;
 	pip->limiter = argv[2];
+	pip->infile = argv[1];
+	pip->outfile = argv[argc - 1];
+	pip->cmds_w_args = argv + 2 + pip->is_heredoc;
 	pip->pipes = 0;
 	pip->nb_pipes = argc - 4 - pip->is_heredoc;
 	pip->s_errno = 0;
