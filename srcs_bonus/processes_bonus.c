@@ -6,7 +6,7 @@
 /*   By: ple-stra <ple-stra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 22:24:34 by ple-stra          #+#    #+#             */
-/*   Updated: 2022/08/18 02:28:23 by ple-stra         ###   ########.fr       */
+/*   Updated: 2022/08/18 07:44:15 by ple-stra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void	child_2(t_pip *pip, const char *outfile, const char *cmd,
 	int fds_pipe[2])
 {
 	int	fd_file;
+	int	oflag;
 
 	if (dup2(fds_pipe[0], STDIN_FILENO) == -1)
 	{
@@ -71,7 +72,11 @@ void	child_2(t_pip *pip, const char *outfile, const char *cmd,
 		ft_exit(*pip, ft_perror_errno(*pip));
 	}
 	close_pipe(fds_pipe);
-	fd_file = open(outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (pip->is_heredoc)
+		oflag = O_WRONLY | O_CREAT | O_APPEND;
+	else
+		oflag = O_WRONLY | O_CREAT | O_TRUNC;
+	fd_file = open(outfile, oflag, 0644);
 	if (fd_file == -1)
 		ft_exit(*pip, ft_fperror_errno(*pip, outfile));
 	if (dup2(fd_file, STDOUT_FILENO) == -1)
