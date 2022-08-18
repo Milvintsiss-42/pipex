@@ -6,7 +6,7 @@
 /*   By: ple-stra <ple-stra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 20:05:04 by ple-stra          #+#    #+#             */
-/*   Updated: 2022/08/18 09:34:55 by ple-stra         ###   ########.fr       */
+/*   Updated: 2022/08/18 10:05:40 by ple-stra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,9 @@ void		ft_exit(t_pip pip, int err_num, int is_child);
 
 void		close_pipe(int fds[2]);
 void		close_all_pipes(t_pip pip);
-int			sets_pipe_as_stdin(t_pip *pip, int fds_pipe[2], int have_to_close);
-int			sets_pipe_as_stdout(t_pip *pip, int fds_pipe[2], int have_to_close);
+void		create_pipes(t_pip *pip);
+void		sets_pipe_as_stdin(t_pip *pip, int fds_pipe[2], int have_to_close);
+void		sets_pipe_as_stdout(t_pip *pip, int fds_pipe[2], int have_to_close);
 
 char		*get_path_from_env(char	**env);
 char		*get_absolute_path(t_pip *pip, const char *file, char *path);

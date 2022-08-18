@@ -6,7 +6,7 @@
 /*   By: ple-stra <ple-stra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 22:24:34 by ple-stra          #+#    #+#             */
-/*   Updated: 2022/08/18 09:34:02 by ple-stra         ###   ########.fr       */
+/*   Updated: 2022/08/18 10:05:04 by ple-stra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	exec_command(t_pip *pip, const char *cmd_x_args)
 		ft_exit(*pip, ft_perror_errno(*pip), 1);
 }
 
-static int	sets_infile_as_stdin(t_pip *pip)
+static void	sets_infile_as_stdin(t_pip *pip)
 {
 	int	fd_file;
 
@@ -51,7 +51,7 @@ static int	sets_infile_as_stdin(t_pip *pip)
 	close(fd_file);
 }
 
-static int	sets_outfile_as_stdout(t_pip *pip)
+static void	sets_outfile_as_stdout(t_pip *pip)
 {
 	int	fd_file;
 	int	oflag;
