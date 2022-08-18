@@ -6,7 +6,7 @@
 /*   By: ple-stra <ple-stra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 21:27:15 by ple-stra          #+#    #+#             */
-/*   Updated: 2022/08/18 08:38:11 by ple-stra         ###   ########.fr       */
+/*   Updated: 2022/08/18 08:55:24 by ple-stra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ int	ft_fperror_errno(t_pip pip, const char *filename)
 
 void	ft_exit(t_pip pip, int err_num)
 {
-	close_all_pipes(pip);
+	if (pip.pipes)
+		close_all_pipes(pip);
 	free(pip.pipes);
 	close(STDIN_FILENO);
 	close(STDOUT_FILENO);
