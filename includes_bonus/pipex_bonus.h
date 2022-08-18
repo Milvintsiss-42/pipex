@@ -6,7 +6,7 @@
 /*   By: ple-stra <ple-stra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 20:05:04 by ple-stra          #+#    #+#             */
-/*   Updated: 2022/08/18 07:18:37 by ple-stra         ###   ########.fr       */
+/*   Updated: 2022/08/18 08:48:35 by ple-stra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct s_pip
 	char		**env;
 	char		*path;
 	char const	**cmds_w_args;
+	char const	*last_cmds_w_args;
 	const char	*infile;
 	const char	*outfile;
 	int			is_heredoc;
@@ -51,14 +52,15 @@ int			ft_fperror_errno(t_pip pip, const char *filename);
 
 void		ft_exit(t_pip pip, int err_num);
 
+void		close_pipe(int fds[2]);
+void		close_all_pipes(t_pip pip);
+int			sets_pipe_as_stdin(t_pip *pip, int fds_pipe[2], int have_to_close);
+int			sets_pipe_as_stdout(t_pip *pip, int fds_pipe[2], int have_to_close);
+
 char		*get_path_from_env(char	**env);
 char		*get_absolute_path(t_pip *pip, const char *file, char *path);
 const char	*get_exec_basename(const char *path);
 
-void		child_1(t_pip *pip, const char *infile, const char *cmd,
-				int fds_pipe[2]);
-void		child_2(t_pip *pip, const char *outfile, const char *cmd,
-				int fds_pipe[2]);
-void		close_pipe(int fds[2]);
+void		child(t_pip *pip, const char *cmd_w_args, int fds_pipe[2]);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ple-stra <ple-stra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 15:44:27 by ple-stra          #+#    #+#             */
-/*   Updated: 2022/08/18 07:38:59 by ple-stra         ###   ########.fr       */
+/*   Updated: 2022/08/18 08:46:32 by ple-stra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,10 @@ static void	init_pip_data(t_pip *pip, int argc, char const **argv, char **env)
 	pip->limiter = argv[2];
 	pip->infile = argv[1];
 	pip->outfile = argv[argc - 1];
-	pip->cmds_w_args = argv + 2 + pip->is_heredoc;
 	pip->pipes = 0;
 	pip->nb_pipes = argc - 4 - pip->is_heredoc;
+	pip->cmds_w_args = argv + pip->is_heredoc + 2;
+	pip->last_cmds_w_args = argv[pip->is_heredoc + 2 + pip->nb_pipes];
 	pip->s_errno = 0;
 }
 
@@ -46,18 +47,6 @@ static void	create_pipes(t_pip *pip)
 	{
 		if (pipe(pip->pipes + i * 2) == -1)
 			ft_exit(*pip, ft_perror_errno(*pip));
-		i++;
-	}
-}
-
-static void	close_all_pipes(t_pip *pip)
-{
-	int	i;
-
-	i = 0;
-	while (i < pip->nb_pipes)
-	{
-		close_pipe(pip->pipes + i * 2);
 		i++;
 	}
 }

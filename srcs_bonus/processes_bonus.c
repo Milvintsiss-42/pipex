@@ -6,7 +6,7 @@
 /*   By: ple-stra <ple-stra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 22:24:34 by ple-stra          #+#    #+#             */
-/*   Updated: 2022/08/18 07:44:15 by ple-stra         ###   ########.fr       */
+/*   Updated: 2022/08/18 08:47:51 by ple-stra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,64 +32,54 @@ static void	exec_command(t_pip *pip, const char *cmd_x_args)
 		ft_freesplit(args);
 		exit(pip->s_errno);
 	}
-	if (abs_path)
-		if (execve(abs_path, args, pip->env) == -1)
-			exit(ft_perror_errno(*pip));
+	else if (execve(abs_path, args, pip->env) == -1)
+		exit(ft_perror_errno(*pip));
 }
 
-void	child_1(t_pip *pip, const char *infile, const char *cmd,
-	int fds_pipe[2])
+static int	sets_infile_as_stdin(t_pip *pip)
 {
 	int	fd_file;
 
-	if (dup2(fds_pipe[1], STDOUT_FILENO) == -1)
-	{
-		close_pipe(fds_pipe);
-		ft_exit(*pip, ft_perror_errno(*pip));
-	}
-	close_pipe(fds_pipe);
-	fd_file = open(infile, O_RDONLY);
+	fd_file = open(pip->infile, O_RDONLY);
 	if (fd_file == -1)
-		ft_exit(*pip, ft_fperror_errno(*pip, infile));
+		ft_exit(*pip, ft_fperror_errno(*pip, pip->infile));
 	if (dup2(fd_file, STDIN_FILENO) == -1)
 	{
 		close(fd_file);
 		ft_exit(*pip, ft_perror_errno(*pip));
 	}
 	close(fd_file);
-	exec_command(pip, cmd);
 }
 
-void	child_2(t_pip *pip, const char *outfile, const char *cmd,
-	int fds_pipe[2])
+static int	sets_outfile_as_stdout(t_pip *pip)
 {
 	int	fd_file;
 	int	oflag;
 
-	if (dup2(fds_pipe[0], STDIN_FILENO) == -1)
-	{
-		close_pipe(fds_pipe);
-		ft_exit(*pip, ft_perror_errno(*pip));
-	}
-	close_pipe(fds_pipe);
 	if (pip->is_heredoc)
 		oflag = O_WRONLY | O_CREAT | O_APPEND;
 	else
 		oflag = O_WRONLY | O_CREAT | O_TRUNC;
-	fd_file = open(outfile, oflag, 0644);
+	fd_file = open(pip->outfile, oflag, 0644);
 	if (fd_file == -1)
-		ft_exit(*pip, ft_fperror_errno(*pip, outfile));
+		ft_exit(*pip, ft_fperror_errno(*pip, pip->outfile));
 	if (dup2(fd_file, STDOUT_FILENO) == -1)
 	{
 		close(fd_file);
 		ft_exit(*pip, ft_perror_errno(*pip));
 	}
 	close(fd_file);
-	exec_command(pip, cmd);
 }
 
-void	close_pipe(int fds[2])
+void	child(t_pip *pip, const char *cmd_w_args, int fds_pipe[2])
 {
-	close(fds[0]);
-	close(fds[1]);
+	if (cmd_w_args == pip->cmds_w_args[0])
+		sets_infile_as_stdin(pip);
+	else
+		sets_pipe_as_stdin(pip, fds_pipe, cmd_w_args == pip->last_cmds_w_args);
+	if (cmd_w_args == pip->last_cmds_w_args)
+		sets_outfile_as_stdout(pip);
+	else
+		sets_pipe_as_stdout(pip, fds_pipe, 1);
+	exec_command(pip, cmd_w_args);
 }
