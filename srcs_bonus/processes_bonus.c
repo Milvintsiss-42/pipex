@@ -6,7 +6,7 @@
 /*   By: ple-stra <ple-stra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 22:24:34 by ple-stra          #+#    #+#             */
-/*   Updated: 2022/08/17 20:06:06 by ple-stra         ###   ########.fr       */
+/*   Updated: 2022/08/18 02:28:23 by ple-stra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,20 @@ void	child_1(t_pip *pip, const char *infile, const char *cmd,
 {
 	int	fd_file;
 
-	dup2(fds_pipe[1], STDOUT_FILENO);
+	if (dup2(fds_pipe[1], STDOUT_FILENO) == -1)
+	{
+		close_pipe(fds_pipe);
+		ft_exit(*pip, ft_perror_errno(*pip));
+	}
 	close_pipe(fds_pipe);
 	fd_file = open(infile, O_RDONLY);
 	if (fd_file == -1)
 		ft_exit(*pip, ft_fperror_errno(*pip, infile));
-	dup2(fd_file, STDIN_FILENO);
+	if (dup2(fd_file, STDIN_FILENO) == -1)
+	{
+		close(fd_file);
+		ft_exit(*pip, ft_perror_errno(*pip));
+	}
 	close(fd_file);
 	exec_command(pip, cmd);
 }
@@ -57,12 +65,20 @@ void	child_2(t_pip *pip, const char *outfile, const char *cmd,
 {
 	int	fd_file;
 
-	dup2(fds_pipe[0], STDIN_FILENO);
+	if (dup2(fds_pipe[0], STDIN_FILENO) == -1)
+	{
+		close_pipe(fds_pipe);
+		ft_exit(*pip, ft_perror_errno(*pip));
+	}
 	close_pipe(fds_pipe);
 	fd_file = open(outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd_file == -1)
 		ft_exit(*pip, ft_fperror_errno(*pip, outfile));
-	dup2(fd_file, STDOUT_FILENO);
+	if (dup2(fd_file, STDOUT_FILENO) == -1)
+	{
+		close(fd_file);
+		ft_exit(*pip, ft_perror_errno(*pip));
+	}
 	close(fd_file);
 	exec_command(pip, cmd);
 }
