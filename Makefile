@@ -6,7 +6,7 @@
 #    By: ple-stra <ple-stra@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/29 15:36:23 by ple-stra          #+#    #+#              #
-#    Updated: 2022/08/18 08:47:13 by ple-stra         ###   ########.fr        #
+#    Updated: 2022/08/18 11:14:38 by ple-stra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ SRCS		= pipex.c\
  errors.c
 SRCSBNS_DIR	= srcs_bonus
 SRCSBNS		= pipex_bonus.c\
- path_bonus.c processes_bonus.c pipes_utils_bonus.c\
+ path_bonus.c processes_bonus.c pipes_utils_bonus.c here_doc_bonus.c\
  errors_bonus.c
 BUILD_DIR	= build
 OBJ_DIR		= $(BUILD_DIR)/objs
