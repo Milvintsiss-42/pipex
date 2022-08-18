@@ -6,7 +6,7 @@
 /*   By: ple-stra <ple-stra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 15:44:27 by ple-stra          #+#    #+#             */
-/*   Updated: 2022/08/18 07:26:59 by ple-stra         ###   ########.fr       */
+/*   Updated: 2022/08/18 07:38:59 by ple-stra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,10 @@ int	main(int argc, char const **argv, char **env)
 	create_pipes(&pip);
 	pid[0] = fork();
 	if (pid[0] == 0)
-		child_1(&pip, argv[1], argv[2], pip.pipes);
+		child_1(&pip, pip.infile, pip.cmds_w_args[0], pip.pipes);
 	pid[1] = fork();
 	if (pid[1] == 0)
-		child_2(&pip, argv[4], argv[3], pip.pipes);
+		child_2(&pip, pip.outfile, pip.cmds_w_args[1], pip.pipes);
 	close_all_pipes(&pip);
 	if (pid[0] == -1 || pid[1] == -1)
 		return (ft_perror_errno(pip));
