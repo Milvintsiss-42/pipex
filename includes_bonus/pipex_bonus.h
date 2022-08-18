@@ -6,7 +6,7 @@
 /*   By: ple-stra <ple-stra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 20:05:04 by ple-stra          #+#    #+#             */
-/*   Updated: 2022/08/18 06:26:54 by ple-stra         ###   ########.fr       */
+/*   Updated: 2022/08/18 06:54:56 by ple-stra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ typedef struct s_pip
 	const char	*exec_name;
 	char		**env;
 	char		*path;
+	int			is_heredoc;
+	const char	*limiter;
 	int			*pipes;
 	int			nb_pipes;
 	int			s_errno;
