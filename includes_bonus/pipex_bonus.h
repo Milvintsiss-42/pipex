@@ -6,7 +6,7 @@
 /*   By: ple-stra <ple-stra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 20:05:04 by ple-stra          #+#    #+#             */
-/*   Updated: 2022/08/18 09:16:07 by ple-stra         ###   ########.fr       */
+/*   Updated: 2022/08/18 09:34:55 by ple-stra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct s_pip
 	const char	*limiter;
 	int			*pipes;
 	int			nb_pipes;
+	pid_t		*pids;
 	int			s_errno;
 }	t_pip;
 
@@ -61,6 +62,7 @@ char		*get_path_from_env(char	**env);
 char		*get_absolute_path(t_pip *pip, const char *file, char *path);
 const char	*get_exec_basename(const char *path);
 
-void		child(t_pip *pip, const char *cmd_w_args, int fds_pipe[2]);
+void		child(t_pip *pip, const char *cmd_w_args, int pipein[2],
+				int pipeout[2]);
 
 #endif

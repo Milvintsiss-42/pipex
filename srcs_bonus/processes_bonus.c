@@ -6,7 +6,7 @@
 /*   By: ple-stra <ple-stra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 22:24:34 by ple-stra          #+#    #+#             */
-/*   Updated: 2022/08/18 09:12:27 by ple-stra         ###   ########.fr       */
+/*   Updated: 2022/08/18 09:34:02 by ple-stra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,15 +71,15 @@ static int	sets_outfile_as_stdout(t_pip *pip)
 	close(fd_file);
 }
 
-void	child(t_pip *pip, const char *cmd_w_args, int fds_pipe[2])
+void	child(t_pip *pip, const char *cmd_w_args, int pipein[2], int pipeout[2])
 {
 	if (cmd_w_args == pip->cmds_w_args[0])
 		sets_infile_as_stdin(pip);
 	else
-		sets_pipe_as_stdin(pip, fds_pipe, cmd_w_args == pip->last_cmds_w_args);
+		sets_pipe_as_stdin(pip, pipein, cmd_w_args == pip->last_cmds_w_args);
 	if (cmd_w_args == pip->last_cmds_w_args)
 		sets_outfile_as_stdout(pip);
 	else
-		sets_pipe_as_stdout(pip, fds_pipe, 1);
+		sets_pipe_as_stdout(pip, pipeout, 1);
 	exec_command(pip, cmd_w_args);
 }
