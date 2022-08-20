@@ -6,7 +6,7 @@
 /*   By: ple-stra <ple-stra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 22:24:34 by ple-stra          #+#    #+#             */
-/*   Updated: 2022/08/18 10:05:04 by ple-stra         ###   ########.fr       */
+/*   Updated: 2022/08/20 08:13:55 by ple-stra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,9 @@ static void	sets_outfile_as_stdout(t_pip *pip)
 
 void	child(t_pip *pip, const char *cmd_w_args, int pipein[2], int pipeout[2])
 {
-	if (cmd_w_args == pip->cmds_w_args[0])
+	if (cmd_w_args == pip->cmds_w_args[0] && pip->is_heredoc)
+		set_here_doc_as_stdin(*pip);
+	else if (cmd_w_args == pip->cmds_w_args[0])
 		sets_infile_as_stdin(pip);
 	else
 		sets_pipe_as_stdin(pip, pipein, cmd_w_args == pip->last_cmds_w_args);
