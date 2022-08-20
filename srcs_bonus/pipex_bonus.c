@@ -6,7 +6,7 @@
 /*   By: ple-stra <ple-stra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 15:44:27 by ple-stra          #+#    #+#             */
-/*   Updated: 2022/08/18 10:04:36 by ple-stra         ###   ########.fr       */
+/*   Updated: 2022/08/20 08:13:47 by ple-stra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static void	init_pip_data(t_pip *pip, int argc, char const **argv, char **env)
 {
+	pip->is_heredoc = 0;
 	if (argc == 0 || argv[0] == 0)
 	{
 		pip->exec_name = "";
