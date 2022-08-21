@@ -6,7 +6,7 @@
 #    By: ple-stra <ple-stra@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/29 15:36:23 by ple-stra          #+#    #+#              #
-#    Updated: 2022/08/20 08:17:36 by ple-stra         ###   ########.fr        #
+#    Updated: 2022/08/21 08:16:02 by ple-stra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,7 +68,7 @@ $(GIT_SUBM): %/.git: .gitmodules
 $(LIBFT)	:
 ifeq (,$(wildcard $(LIBFT)))
 			@echo "building libft..."
-			@$(MAKE) -sC $(LIBFT_DIR) all
+			@$(MAKE) -sC $(LIBFT_DIR) all disable_gnl_eof_mid_line
 endif
 
 rmlibft		:

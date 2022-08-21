@@ -6,7 +6,7 @@
 /*   By: ple-stra <ple-stra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 11:00:57 by ple-stra          #+#    #+#             */
-/*   Updated: 2022/08/20 08:13:34 by ple-stra         ###   ########.fr       */
+/*   Updated: 2022/08/21 07:39:37 by ple-stra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,11 @@
 static int	is_end_of_input(t_pip pip, char *line, size_t len)
 {
 	int	is_end_of_input;
-	int	has_eol;
 
-	has_eol = *(line + len - 1) == '\n';
-	if (has_eol)
-		*(line + len - 1) = 0;
+	*(line + len - 1) = 0;
 	is_end_of_input = (*(pip.limiter) != 0 ^ len == 1)
 		&& ft_strncmp(line, pip.limiter, len - 1) == 0;
-	if (has_eol)
-		*(line + len - 1) = '\n';
+	*(line + len - 1) = '\n';
 	return (is_end_of_input);
 }
 
