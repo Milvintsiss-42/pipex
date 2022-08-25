@@ -6,7 +6,7 @@
 /*   By: ple-stra <ple-stra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 22:24:34 by ple-stra          #+#    #+#             */
-/*   Updated: 2022/08/18 09:13:08 by ple-stra         ###   ########.fr       */
+/*   Updated: 2022/08/25 12:07:46 by ple-stra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,25 @@ static void	exec_command(t_pip *pip, const char *cmd_x_args)
 {
 	char	**args;
 	char	*abs_path;
+	int		s_errno;
 
 	if (!*cmd_x_args)
 		ft_exit(*pip, ft_fperror(*pip, "", strerror(13)));
 	args = ft_split(cmd_x_args, ' ');
 	if (!args)
 		ft_exit(*pip, ft_perror_errno(*pip));
-	abs_path = get_absolute_path(pip, args[0], pip->path);
+	abs_path = get_absolute_path(pip, args[0], pip->path, &s_errno);
 	if (!abs_path)
 	{
-		if (pip->s_errno == 2)
+		if (s_errno == 2)
+		{
+			s_errno = 127;
 			ft_fperror(*pip, args[0], ERR_CMD_NOT_FOUND);
+		}
 		else
-			ft_fperror(*pip, args[0], strerror(pip->s_errno));
+			ft_fperror(*pip, args[0], strerror(s_errno));
 		ft_freesplit(args);
-		ft_exit(*pip, pip->s_errno);
+		ft_exit(*pip, s_errno);
 	}
 	if (abs_path)
 		if (execve(abs_path, args, pip->env) == -1)

@@ -6,7 +6,7 @@
 /*   By: ple-stra <ple-stra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 23:13:56 by ple-stra          #+#    #+#             */
-/*   Updated: 2022/08/17 20:06:04 by ple-stra         ###   ########.fr       */
+/*   Updated: 2022/08/25 12:10:55 by ple-stra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ static char	*from_path(t_pip *pip, const char *file, char *path)
 	return (0);
 }
 
-char	*get_absolute_path(t_pip *pip, const char *file, char *path)
+char	*get_absolute_path(t_pip *pip, const char *file, char *path,
+	int *s_errno)
 {
 	char	*abs_path;
 
@@ -78,11 +79,14 @@ char	*get_absolute_path(t_pip *pip, const char *file, char *path)
 			exit(ft_perror_errno(*pip));
 		return (abs_path);
 	}
-	pip->s_errno = errno;
+	*s_errno = errno;
 	if (path)
 		abs_path = from_path(pip, file, path);
 	if (abs_path)
+	{
+		*s_errno = 0;
 		return (abs_path);
+	}
 	return (0);
 }
 

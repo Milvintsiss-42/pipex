@@ -6,7 +6,7 @@
 /*   By: ple-stra <ple-stra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 15:44:27 by ple-stra          #+#    #+#             */
-/*   Updated: 2022/08/03 22:31:42 by ple-stra         ###   ########.fr       */
+/*   Updated: 2022/08/25 12:01:26 by ple-stra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	init_pip_data(t_pip *pip, char const **argv, char **env)
 	pip->exec_name = get_exec_basename(argv[0]);
 	pip->env = env;
 	pip->path = get_path_from_env(env);
-	pip->s_errno = 0;
 }
 
 int	main(int argc, char const **argv, char **env)

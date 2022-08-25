@@ -6,7 +6,7 @@
 /*   By: ple-stra <ple-stra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 15:45:28 by ple-stra          #+#    #+#             */
-/*   Updated: 2022/08/18 05:53:02 by ple-stra         ###   ########.fr       */
+/*   Updated: 2022/08/25 12:02:11 by ple-stra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ typedef struct s_pip
 	const char	*exec_name;
 	char		**env;
 	char		*path;
-	int			s_errno;
 }	t_pip;
 
 int			ft_perror(t_pip pip, const char *error_str);
@@ -45,7 +44,8 @@ int			ft_fperror_errno(t_pip pip, const char *filename);
 void		ft_exit(t_pip pip, int err_num);
 
 char		*get_path_from_env(char	**env);
-char		*get_absolute_path(t_pip *pip, const char *file, char *path);
+char		*get_absolute_path(t_pip *pip, const char *file, char *path,
+				int *s_errno);
 const char	*get_exec_basename(const char *path);
 
 void		child_1(t_pip *pip, const char *infile, const char *cmd,

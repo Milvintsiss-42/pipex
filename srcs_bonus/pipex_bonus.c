@@ -6,7 +6,7 @@
 /*   By: ple-stra <ple-stra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 15:44:27 by ple-stra          #+#    #+#             */
-/*   Updated: 2022/08/20 08:13:47 by ple-stra         ###   ########.fr       */
+/*   Updated: 2022/08/25 12:10:15 by ple-stra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ static void	init_pip_data(t_pip *pip, int argc, char const **argv, char **env)
 	pip->pids = 0;
 	pip->cmds_w_args = argv + pip->is_heredoc + 2;
 	pip->last_cmds_w_args = argv[pip->is_heredoc + 2 + pip->nb_pipes];
-	pip->s_errno = 0;
 }
 
 static void	create_pids_arr(t_pip *pip)
