@@ -62,8 +62,10 @@ $(OBJBNS_DIR)/%.o: $(SRCSBNS_DIR)/%.c
 	$(CC) $(CFLAGS) $(INCBNS) -c $< -o $@
 
 $(GIT_SUBM): %/.git: .gitmodules
+ifneq (noconnection, $(filter noconnection,$(MAKECMDGOALS)))
 	@git submodule init
 	@git submodule update --remote $*
+endif
 
 $(LIBFT)	:
 ifeq (,$(wildcard $(LIBFT)))
@@ -97,9 +99,12 @@ nWerror		:
 			@echo "WARN: Compiling without Werror flag!"
 sanitize	:
 			@echo "WARN: Compiling with fsanitize flag!"
-debug:
+debug		:
 			@echo "WARN: debug is enabled"
+
+noconnection	:
+			@echo "WARN: Fetching submodules disabled!"
 
 .PHONY: \
  all bonus clean fclean fcleanall re rebonus rmlibft\
- nWerror sanitize debug
+ nWerror sanitize debug noconnection
